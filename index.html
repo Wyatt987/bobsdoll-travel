@@ -552,12 +552,44 @@
     font-family: 'Montserrat', sans-serif;
   }
 
+  /* Dest filter bar */
+  .dest-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 20px 60px 0;
+  }
+
+  .dest-filter {
+    background: white;
+    border: 2px solid #e0e8f0;
+    border-radius: 22px;
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--navy);
+    cursor: none;
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+
+  .dest-filter:hover { border-color: var(--teal); color: var(--teal); }
+
+  .dest-filter.active {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: white;
+  }
+
   .dest-grid {
-    padding: 32px 60px;
+    padding: 20px 60px 32px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
   }
+
+  .dest-card.hidden { display: none; }
 
   .dest-card {
     border-radius: 14px;
@@ -1435,80 +1467,160 @@
     </div>
   </div>
 
-  <div class="dest-grid">
-    <!-- Row 1 -->
-    <div class="dest-card">
-      <div class="dest-card-img">
-        <div class="img-placeholder beach">🏖️</div>
-        <div class="dest-card-tag">Beach</div>
-      </div>
-      <div class="dest-card-body">
-        <h3>Cancún, Mexico</h3>
-        <p>Crystal-clear waters and vibrant nightlife await in this tropical paradise.</p>
-        <button class="btn-view">View Package</button>
-      </div>
+  <!-- Filter Bar -->
+  <div class="dest-filters">
+    <button class="dest-filter active" data-filter="all">🌍 All</button>
+    <button class="dest-filter" data-filter="Beach">🏖 Beach</button>
+    <button class="dest-filter" data-filter="City">🏙 City</button>
+    <button class="dest-filter" data-filter="Mountain">🏔 Mountain</button>
+    <button class="dest-filter" data-filter="Adventure">🌿 Adventure</button>
+    <button class="dest-filter" data-filter="Exotic">✨ Exotic</button>
+    <button class="dest-filter" data-filter="Cultural">🏛 Cultural</button>
+    <button class="dest-filter" data-filter="Cruise">🚢 Cruise</button>
+    <button class="dest-filter" data-filter="Island">🌴 Island</button>
+  </div>
+
+  <div id="dest-no-results" style="display:none; text-align:center; padding:60px 20px; color:#888; font-size:16px; font-family:'Montserrat',sans-serif;">
+    ✈️ No destinations found. Try a different search or filter!
+  </div>
+
+  <div class="dest-grid" id="dest-grid">
+
+    <div class="dest-card" data-name="Cancún, Mexico" data-tag="Beach" data-keywords="cancun mexico beach caribbean tropical nightlife">
+      <div class="dest-card-img"><div class="img-placeholder beach">🏖️</div><div class="dest-card-tag">Beach</div></div>
+      <div class="dest-card-body"><h3>Cancún, Mexico</h3><p>Crystal-clear waters and vibrant nightlife in this tropical paradise.</p><button class="btn-view">View Package</button></div>
     </div>
 
-    <div class="dest-card">
-      <div class="dest-card-img">
-        <div class="img-placeholder city">🗼</div>
-        <div class="dest-card-tag">City</div>
-      </div>
-      <div class="dest-card-body">
-        <h3>Paris, France</h3>
-        <p>The City of Light — romance, culture, and world-class cuisine await.</p>
-        <button class="btn-view">View Package</button>
-      </div>
+    <div class="dest-card" data-name="Paris, France" data-tag="City" data-keywords="paris france city romance eiffel tower europe culture cuisine">
+      <div class="dest-card-img"><div class="img-placeholder city">🗼</div><div class="dest-card-tag">City</div></div>
+      <div class="dest-card-body"><h3>Paris, France</h3><p>The City of Light — romance, culture, and world-class cuisine.</p><button class="btn-view">View Package</button></div>
     </div>
 
-    <div class="dest-card">
-      <div class="dest-card-img">
-        <div class="img-placeholder jungle">🌴</div>
-        <div class="dest-card-tag">Adventure</div>
-      </div>
-      <div class="dest-card-body">
-        <h3>Bali, Indonesia</h3>
-        <p>Ancient temples, lush terraces, and serene spiritual retreats.</p>
-        <button class="btn-view">View Package</button>
-      </div>
+    <div class="dest-card" data-name="Bali, Indonesia" data-tag="Adventure" data-keywords="bali indonesia adventure temples jungle spiritual retreat asia">
+      <div class="dest-card-img"><div class="img-placeholder jungle">🌴</div><div class="dest-card-tag">Adventure</div></div>
+      <div class="dest-card-body"><h3>Bali, Indonesia</h3><p>Ancient temples, lush rice terraces, and serene spiritual retreats.</p><button class="btn-view">View Package</button></div>
     </div>
 
-    <!-- Row 2 -->
-    <div class="dest-card">
-      <div class="dest-card-img">
-        <div class="img-placeholder snow">🏔️</div>
-        <div class="dest-card-tag">Mountain</div>
-      </div>
-      <div class="dest-card-body">
-        <h3>Swiss Alps</h3>
-        <p>World-class skiing and charming alpine villages in the heart of Europe.</p>
-        <button class="btn-view">View Package</button>
-      </div>
+    <div class="dest-card" data-name="Swiss Alps" data-tag="Mountain" data-keywords="swiss alps switzerland mountain skiing snow europe winter">
+      <div class="dest-card-img"><div class="img-placeholder snow">🏔️</div><div class="dest-card-tag">Mountain</div></div>
+      <div class="dest-card-body"><h3>Swiss Alps</h3><p>World-class skiing and charming alpine villages in the heart of Europe.</p><button class="btn-view">View Package</button></div>
     </div>
 
-    <div class="dest-card">
-      <div class="dest-card-img">
-        <div class="img-placeholder desert">🏜️</div>
-        <div class="dest-card-tag">Exotic</div>
-      </div>
-      <div class="dest-card-body">
-        <h3>Dubai, UAE</h3>
-        <p>Futuristic skylines, golden deserts, and luxury beyond imagination.</p>
-        <button class="btn-view">View Package</button>
-      </div>
+    <div class="dest-card" data-name="Dubai, UAE" data-tag="Exotic" data-keywords="dubai uae exotic luxury desert skyscrapers shopping middle east">
+      <div class="dest-card-img"><div class="img-placeholder desert">🏜️</div><div class="dest-card-tag">Exotic</div></div>
+      <div class="dest-card-body"><h3>Dubai, UAE</h3><p>Futuristic skylines, golden deserts, and luxury beyond imagination.</p><button class="btn-view">View Package</button></div>
     </div>
 
-    <div class="dest-card">
-      <div class="dest-card-img">
-        <div class="img-placeholder mountain">🗽</div>
-        <div class="dest-card-tag">Cultural</div>
-      </div>
-      <div class="dest-card-body">
-        <h3>New York, USA</h3>
-        <p>The city that never sleeps — art, fashion, food, and iconic landmarks.</p>
-        <button class="btn-view">View Package</button>
-      </div>
+    <div class="dest-card" data-name="New York, USA" data-tag="City" data-keywords="new york usa city nyc manhattan statue of liberty broadway art">
+      <div class="dest-card-img"><div class="img-placeholder mountain">🗽</div><div class="dest-card-tag">City</div></div>
+      <div class="dest-card-body"><h3>New York, USA</h3><p>The city that never sleeps — art, fashion, food, and iconic landmarks.</p><button class="btn-view">View Package</button></div>
     </div>
+
+    <div class="dest-card" data-name="Tokyo, Japan" data-tag="Cultural" data-keywords="tokyo japan cultural city temples cherry blossom sushi anime">
+      <div class="dest-card-img"><div class="img-placeholder city" style="background:linear-gradient(135deg,#e74c3c,#c0392b);">🗾</div><div class="dest-card-tag">Cultural</div></div>
+      <div class="dest-card-body"><h3>Tokyo, Japan</h3><p>Ultra-modern city meets ancient tradition — shrines, sushi, and neon lights.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Santorini, Greece" data-tag="Island" data-keywords="santorini greece island mediterranean blue domes sunset volcano">
+      <div class="dest-card-img"><div class="img-placeholder beach" style="background:linear-gradient(135deg,#3498db,#1a6ea8);">🏛️</div><div class="dest-card-tag">Island</div></div>
+      <div class="dest-card-body"><h3>Santorini, Greece</h3><p>White-washed cliffs, iconic blue domes, and breathtaking Aegean sunsets.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Machu Picchu, Peru" data-tag="Adventure" data-keywords="machu picchu peru adventure inca ruins south america hiking history">
+      <div class="dest-card-img"><div class="img-placeholder jungle" style="background:linear-gradient(135deg,#8e6b3e,#5a3e28);">🏔️</div><div class="dest-card-tag">Adventure</div></div>
+      <div class="dest-card-body"><h3>Machu Picchu, Peru</h3><p>Lost Incan citadel high in the Andes — one of the world's greatest wonders.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Maldives" data-tag="Island" data-keywords="maldives island overwater bungalow tropical ocean coral reef paradise">
+      <div class="dest-card-img"><div class="img-placeholder beach" style="background:linear-gradient(135deg,#00b4db,#0083b0);">🏝️</div><div class="dest-card-tag">Island</div></div>
+      <div class="dest-card-body"><h3>Maldives</h3><p>Overwater bungalows, crystal lagoons, and the world's most pristine coral reefs.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Rome, Italy" data-tag="Cultural" data-keywords="rome italy cultural colosseum vatican history food pasta pizza europe">
+      <div class="dest-card-img"><div class="img-placeholder mountain" style="background:linear-gradient(135deg,#c0392b,#922b21);">🏟️</div><div class="dest-card-tag">Cultural</div></div>
+      <div class="dest-card-body"><h3>Rome, Italy</h3><p>The Eternal City — ancient ruins, Renaissance art, and incredible Italian food.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Safari, Kenya" data-tag="Adventure" data-keywords="safari kenya africa wildlife big five elephant lion savanna nature">
+      <div class="dest-card-img"><div class="img-placeholder desert" style="background:linear-gradient(135deg,#d4a017,#a07010);">🦁</div><div class="dest-card-tag">Adventure</div></div>
+      <div class="dest-card-body"><h3>Safari, Kenya</h3><p>Witness the Great Migration and the Big Five on a once-in-a-lifetime African safari.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Barcelona, Spain" data-tag="City" data-keywords="barcelona spain city gaudi sagrada familia tapas beach europe nightlife">
+      <div class="dest-card-img"><div class="img-placeholder city" style="background:linear-gradient(135deg,#e67e22,#d35400);">🏖️</div><div class="dest-card-tag">City</div></div>
+      <div class="dest-card-body"><h3>Barcelona, Spain</h3><p>Gaudí's masterpieces, golden beaches, and legendary tapas bars at every corner.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Patagonia, Argentina" data-tag="Mountain" data-keywords="patagonia argentina chile mountain hiking glaciers torres del paine wilderness">
+      <div class="dest-card-img"><div class="img-placeholder snow" style="background:linear-gradient(135deg,#2c3e50,#3498db);">🏔️</div><div class="dest-card-tag">Mountain</div></div>
+      <div class="dest-card-body"><h3>Patagonia, Argentina</h3><p>Dramatic glaciers, jagged peaks, and untouched wilderness at the end of the world.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Sydney, Australia" data-tag="City" data-keywords="sydney australia city opera house harbour beach surfing wildlife">
+      <div class="dest-card-img"><div class="img-placeholder beach" style="background:linear-gradient(135deg,#f39c12,#d68910);">🦘</div><div class="dest-card-tag">City</div></div>
+      <div class="dest-card-body"><h3>Sydney, Australia</h3><p>Iconic Opera House, stunning harbour, golden beaches, and endless outdoor adventure.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Caribbean Cruise" data-tag="Cruise" data-keywords="caribbean cruise ship bahamas jamaica st lucia sea island hopping">
+      <div class="dest-card-img"><div class="img-placeholder beach" style="background:linear-gradient(135deg,#1abc9c,#16a085);">🚢</div><div class="dest-card-tag">Cruise</div></div>
+      <div class="dest-card-body"><h3>Caribbean Cruise</h3><p>Island-hop through turquoise waters aboard a luxury cruise liner.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Kyoto, Japan" data-tag="Cultural" data-keywords="kyoto japan cultural geisha temples bamboo forest zen gardens traditional">
+      <div class="dest-card-img"><div class="img-placeholder jungle" style="background:linear-gradient(135deg,#c0392b,#922b21);">⛩️</div><div class="dest-card-tag">Cultural</div></div>
+      <div class="dest-card-body"><h3>Kyoto, Japan</h3><p>Timeless temples, bamboo groves, geisha culture, and stunning autumn foliage.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Iceland" data-tag="Adventure" data-keywords="iceland adventure northern lights aurora geysers waterfalls puffin volcano">
+      <div class="dest-card-img"><div class="img-placeholder snow" style="background:linear-gradient(135deg,#1a252f,#2ecc71);">🌌</div><div class="dest-card-tag">Adventure</div></div>
+      <div class="dest-card-body"><h3>Iceland</h3><p>Chase the Northern Lights, hike volcanoes, and bathe in geothermal hot springs.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Amalfi Coast, Italy" data-tag="Beach" data-keywords="amalfi coast italy beach cliffside positano mediterranean sailing food">
+      <div class="dest-card-img"><div class="img-placeholder beach" style="background:linear-gradient(135deg,#27ae60,#1e8449);">🌊</div><div class="dest-card-tag">Beach</div></div>
+      <div class="dest-card-body"><h3>Amalfi Coast, Italy</h3><p>Dramatic clifftop villages, azure Mediterranean waters, and world-famous pasta.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Bangkok, Thailand" data-tag="Exotic" data-keywords="bangkok thailand exotic temples street food tuk tuk palace floating market">
+      <div class="dest-card-img"><div class="img-placeholder desert" style="background:linear-gradient(135deg,#8e44ad,#6c3483);">🛕</div><div class="dest-card-tag">Exotic</div></div>
+      <div class="dest-card-body"><h3>Bangkok, Thailand</h3><p>Glittering temples, legendary street food, and electric energy around every corner.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Phuket, Thailand" data-tag="Beach" data-keywords="phuket thailand beach island resort snorkeling diving tropical party">
+      <div class="dest-card-img"><div class="img-placeholder beach" style="background:linear-gradient(135deg,#f1c40f,#f39c12);">🌺</div><div class="dest-card-tag">Beach</div></div>
+      <div class="dest-card-body"><h3>Phuket, Thailand</h3><p>Emerald coves, coral reefs, beach clubs, and legendary Thai hospitality.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Queenstown, New Zealand" data-tag="Adventure" data-keywords="queenstown new zealand adventure bungee jumping skydiving fjords lord of the rings">
+      <div class="dest-card-img"><div class="img-placeholder mountain" style="background:linear-gradient(135deg,#2980b9,#27ae60);">🪂</div><div class="dest-card-tag">Adventure</div></div>
+      <div class="dest-card-body"><h3>Queenstown, NZ</h3><p>The adventure capital of the world — bungee jumping, skiing, and Lord of the Rings landscapes.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Mediterranean Cruise" data-tag="Cruise" data-keywords="mediterranean cruise europe greece italy spain france ports culture history">
+      <div class="dest-card-img"><div class="img-placeholder city" style="background:linear-gradient(135deg,#2471a3,#1a5276);">🚢</div><div class="dest-card-tag">Cruise</div></div>
+      <div class="dest-card-body"><h3>Mediterranean Cruise</h3><p>Sail through history — Athens, Rome, Barcelona, and the French Riviera in one voyage.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Marrakech, Morocco" data-tag="Exotic" data-keywords="marrakech morocco exotic souk medina sahara desert culture spice colorful">
+      <div class="dest-card-img"><div class="img-placeholder desert" style="background:linear-gradient(135deg,#e74c3c,#922b21);">🕌</div><div class="dest-card-tag">Exotic</div></div>
+      <div class="dest-card-body"><h3>Marrakech, Morocco</h3><p>Labyrinthine souks, fragrant spice markets, and gateway to the Sahara Desert.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Fiji" data-tag="Island" data-keywords="fiji island south pacific tropical beach resort honeymoon coral diving">
+      <div class="dest-card-img"><div class="img-placeholder beach" style="background:linear-gradient(135deg,#16a085,#1abc9c);">🌺</div><div class="dest-card-tag">Island</div></div>
+      <div class="dest-card-body"><h3>Fiji</h3><p>Pristine South Pacific paradise — perfect for honeymoons and family escapes alike.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Prague, Czech Republic" data-tag="Cultural" data-keywords="prague czech republic cultural medieval castle old town beer europe history architecture">
+      <div class="dest-card-img"><div class="img-placeholder city" style="background:linear-gradient(135deg,#7f8c8d,#2c3e50);">🏰</div><div class="dest-card-tag">Cultural</div></div>
+      <div class="dest-card-body"><h3>Prague, Czech Republic</h3><p>A fairy-tale city of medieval castles, Gothic spires, and cobblestone charm.</p><button class="btn-view">View Package</button></div>
+    </div>
+
+    <div class="dest-card" data-name="Serengeti, Tanzania" data-tag="Adventure" data-keywords="serengeti tanzania africa safari wildlife migration lions elephants africa nature">
+      <div class="dest-card-img"><div class="img-placeholder desert" style="background:linear-gradient(135deg,#e67e22,#ca6f1e);">🐘</div><div class="dest-card-tag">Adventure</div></div>
+      <div class="dest-card-body"><h3>Serengeti, Tanzania</h3><p>Witness millions of wildebeest on the Great Migration in the heart of Africa.</p><button class="btn-view">View Package</button></div>
+    </div>
+
   </div>
 </div>
 
@@ -1840,6 +1952,57 @@
   // Destination view buttons
   document.querySelectorAll('.btn-view').forEach(btn => {
     btn.addEventListener('click', () => showPage('contact'));
+  });
+
+  // ===== DESTINATIONS SEARCH + FILTER =====
+  let destActiveFilter = 'all';
+
+  function filterDestinations() {
+    const query = document.querySelector('.dest-search input')?.value.toLowerCase().trim() || '';
+    const cards = document.querySelectorAll('#dest-grid .dest-card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const name = card.dataset.name?.toLowerCase() || '';
+      const tag  = card.dataset.tag  || '';
+      const keys = card.dataset.keywords?.toLowerCase() || '';
+
+      const matchesSearch = !query || name.includes(query) || keys.includes(query);
+      const matchesFilter = destActiveFilter === 'all' || tag === destActiveFilter;
+
+      if (matchesSearch && matchesFilter) {
+        card.classList.remove('hidden');
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    const noResults = document.getElementById('dest-no-results');
+    if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  // Search input — live filtering
+  const destInput = document.querySelector('.dest-search input');
+  if (destInput) {
+    destInput.addEventListener('input', filterDestinations);
+    destInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') filterDestinations();
+    });
+  }
+
+  // Search button
+  const destSearchBtn = document.querySelector('.dest-search button');
+  if (destSearchBtn) destSearchBtn.addEventListener('click', filterDestinations);
+
+  // Filter pills
+  document.querySelectorAll('.dest-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.dest-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      destActiveFilter = btn.dataset.filter;
+      filterDestinations();
+    });
   });
 
   // Fact card explore buttons
