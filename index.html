@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BobsDoll Travel</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #E8F046;
+    --teal: #1BC8C8;
+    --navy: #1A2E4A;
+    --sky: #D6EEF8;
+    --white: #ffffff;
+    --light-gray: #f4f7fa;
+    --gray: #888;
+    --dark: #222;
+    --green: #4CAF50;
+    --red: #e74c3c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ===== CUSTOM AIRPLANE CURSOR ===== */
+  body {
+    cursor: none !important;
+    font-family: 'Nunito', sans-serif;
+    background: var(--white);
+    color: var(--dark);
+  }
+
+  #custom-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99999;
+    top: 0; left: 0;
+    transform: translate(-50%, -50%);
+    transition: transform 0.05s linear;
+    font-size: 28px;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    height: 52px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+  .nav-logo .logo-icon {
+    background: var(--yellow);
+    color: var(--navy);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  .nav-logo span.bobs { color: var(--yellow); }
+
+  .nav-links {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--yellow);
+    background: rgba(255,255,255,0.08);
+  }
+
+  .nav-cta {
+    background: var(--teal) !important;
+    color: var(--white) !important;
+    border-radius: 20px !important;
+    padding: 6px 16px !important;
+  }
+  .nav-cta:hover { background: #15aaaa !important; }
+
+  /* ===== PAGE SYSTEM ===== */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ===== PAGE 1: LANDING ===== */
+  .hero {
+    background: linear-gradient(135deg, var(--sky) 0%, #b8e4f5 100%);
+    padding: 48px 60px 40px;
+    position: relative;
+    overflow: hidden;
+    min-height: 320px;
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(27,200,200,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-content { flex: 1; z-index: 1; }
+
+  .hero h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 span { color: var(--teal); }
+
+  .hero-tagline {
+    font-size: 15px;
+    color: #5a7a9a;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  .hero-search {
+    background: white;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(26,46,74,0.12);
+    max-width: 560px;
+    margin-bottom: 20px;
+  }
+
+  .hero-search input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    color: var(--dark);
+  }
+
+  .hero-search input::placeholder { color: #aaa; }
+
+  .btn-start {
+    background: var(--yellow);
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-weight: 800;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    cursor: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-start:hover { background: #d4db30; transform: translateY(-1px); }
+
+  .hero-stats {
+    display: flex;
+    gap: 28px;
+    margin-top: 4px;
+  }
+
+  .stat { text-align: center; }
+  .stat .num {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--navy);
+    font-family: 'Montserrat', sans-serif;
+    display: block;
+  }
+  .stat .lbl { font-size: 11px; color: #6a8aaa; font-weight: 600; }
+
+  .hero-img-wrap {
+    flex-shrink: 0;
+    width: 280px;
+    height: 220px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(26,46,74,0.18);
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-badge {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: var(--yellow);
+    color: var(--navy);
+    border-radius: 50%;
+    width: 52px; height: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 900;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    line-height: 1.2;
+    z-index: 2;
+  }
+
+  /* Vacation Types */
+  .section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--navy);
+    padding: 28px 60px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, var(--teal), transparent);
+    margin-left: 12px;
+  }
+
+  .section-sub {
+    font-size: 13px;
+    color: #aaa;
+    font-weight: 600;
+    padding: 0 60px 16px;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .vacation-types {
+    padding: 0 60px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .vtype-card {
+    background: var(--sky);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--navy);
+    cursor: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .vtype-card:hover { border-color: var(--teal); background: white; }
+  .vtype-card .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--teal); }
+
+  /* Article section */
+  .article-section {
+    padding: 28px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .article-text p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 10px;
+  }
+
+  .article-img {
+    border-radius: 12px;
+    overflow: hidden;
+    height: 220px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  .article-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ===== PAGE 2: DESTINATIONS ===== */
+  .destinations-hero {
+    background: linear-gradient(135deg, var(--sky) 0%, #c8eef8 100%);
+    padding: 32px 60px 24px;
+    text-align: center;
+    position: relative;
+  }
+
+  .destinations-hero h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 14px;
+  }
+
+  .dest-search {
+    display: flex;
+    gap: 10px;
+    max-width: 480px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 10px;
+    padding: 10px 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    align-items: center;
+  }
+
+  .dest-search input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .dest-search button {
+    background: var(--teal);
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 8px 16px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: none;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .dest-grid {
+    padding: 32px 60px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .dest-card {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: white;
+  }
+
+  .dest-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.15); }
+
+  .dest-card-img {
+    height: 160px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .dest-card-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  .dest-card-tag {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: var(--teal);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .dest-card-body {
+    padding: 14px 16px;
+  }
+
+  .dest-card-body h3 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--navy);
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 4px;
+  }
+
+  .dest-card-body p {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 12px;
+  }
+
+  .btn-view {
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: none;
+    font-family: 'Montserrat', sans-serif;
+    transition: background 0.2s;
+    width: 100%;
+  }
+
+  .btn-view:hover { background: var(--teal); }
+
+  /* ===== PAGE 3: LEARN WORLD ===== */
+  .learn-hero {
+    background: linear-gradient(135deg, var(--sky) 0%, #d0f0f0 100%);
+    padding: 32px 60px 24px;
+    text-align: center;
+  }
+
+  .learn-hero h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .learn-hero p {
+    font-size: 13px;
+    color: #5a7a9a;
+    margin-bottom: 8px;
+  }
+
+  .pins-grid {
+    padding: 20px 60px 12px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .pin-item {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid white;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    cursor: none;
+    transition: transform 0.2s;
+    position: relative;
+  }
+
+  .pin-item:hover { transform: scale(1.15); }
+  .pin-item img { width: 100%; height: 100%; object-fit: cover; }
+
+  .pin-emoji {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    border: 3px solid white;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    cursor: none;
+    transition: transform 0.2s;
+    background: var(--sky);
+  }
+  .pin-emoji:hover { transform: scale(1.15); }
+
+  .click-discover {
+    text-align: center;
+    font-size: 13px;
+    color: #888;
+    padding: 8px 0 20px;
+    font-style: italic;
+  }
+
+  .world-facts {
+    padding: 16px 60px 32px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .fact-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.2s;
+  }
+
+  .fact-card:hover { transform: translateY(-3px); }
+
+  .fact-card h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .fact-card ul {
+    list-style: none;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.8;
+  }
+
+  .fact-card ul li::before { content: '→ '; color: var(--teal); font-weight: 700; }
+
+  .fact-btn {
+    display: block;
+    margin-top: 10px;
+    background: var(--teal);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: none;
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+  }
+
+  /* ===== PAGE 4: ABOUT ===== */
+  .about-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #2a4a6a 100%);
+    padding: 40px 60px;
+    color: white;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .about-hero-content { flex: 1; }
+
+  .about-hero h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--yellow);
+    margin-bottom: 10px;
+  }
+
+  .about-hero p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .about-badge {
+    background: var(--yellow);
+    color: var(--navy);
+    border-radius: 50%;
+    width: 90px; height: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.3;
+    flex-shrink: 0;
+  }
+
+  .about-badge .big { font-size: 20px; }
+
+  .what-we-offer {
+    padding: 28px 60px;
+  }
+
+  .wwo-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 16px;
+    border-bottom: 2px solid var(--teal);
+    padding-bottom: 8px;
+    display: inline-block;
+  }
+
+  .wwo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .wwo-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--dark);
+    font-weight: 600;
+  }
+
+  .wwo-item .wwo-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--teal);
+    flex-shrink: 0;
+  }
+
+  .partners-section {
+    padding: 20px 60px 40px;
+  }
+
+  .partners-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .partners-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .partner-card {
+    background: white;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--navy);
+    text-align: center;
+    min-height: 70px;
+    transition: border-color 0.2s;
+  }
+
+  .partner-card:hover { border-color: var(--teal); }
+
+  /* Partner logo styling */
+  .partner-rc { color: #003087; font-size: 11px; line-height: 1.3; }
+  .partner-hyatt { color: #AA8D5B; letter-spacing: 2px; font-size: 16px; }
+  .partner-hr { color: #e74c3c; }
+  .partner-united { color: #002244; font-size: 11px; }
+  .partner-princess { color: #003087; font-size: 11px; line-height: 1.3; }
+  .partner-classic { font-style: italic; color: #555; font-size: 15px; }
+
+  /* ===== PAGE 5: CONTACT ===== */
+  .contact-hero {
+    background: linear-gradient(135deg, var(--sky) 0%, #c8eef8 100%);
+    padding: 30px 60px 24px;
+    text-align: center;
+  }
+
+  .contact-hero h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--navy);
+  }
+
+  .contact-body {
+    padding: 28px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .contact-form-section h3,
+  .quick-team h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #666;
+    margin-bottom: 4px;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    border: 2px solid #e0e8f0;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 13px;
+    font-family: 'Nunito', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus { border-color: var(--teal); }
+
+  .form-group textarea { height: 90px; resize: none; }
+
+  .btn-send {
+    background: var(--teal);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 28px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: none;
+    font-family: 'Montserrat', sans-serif;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-send:hover { background: #15aaaa; }
+
+  .team-card {
+    background: var(--sky);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: transform 0.2s;
+  }
+
+  .team-card:hover { transform: translateX(4px); }
+
+  .team-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .team-info h4 {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--navy);
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .team-info p {
+    font-size: 11px;
+    color: #888;
+  }
+
+  .contact-imgs {
+    padding: 0 60px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .contact-img {
+    border-radius: 12px;
+    overflow: hidden;
+    height: 160px;
+  }
+
+  .contact-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 18px 60px;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer span { color: var(--yellow); }
+  footer a { color: var(--teal); text-decoration: none; }
+
+  /* ===== PLACEHOLDERS FOR IMAGES ===== */
+  .img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.7);
+    background: linear-gradient(135deg, var(--teal), var(--navy));
+  }
+
+  .img-placeholder.beach { background: linear-gradient(135deg, #f39c12, #e74c3c); }
+  .img-placeholder.mountain { background: linear-gradient(135deg, #3498db, #1a252f); }
+  .img-placeholder.city { background: linear-gradient(135deg, #8e44ad, #2c3e50); }
+  .img-placeholder.jungle { background: linear-gradient(135deg, #27ae60, #1a3a2a); }
+  .img-placeholder.desert { background: linear-gradient(135deg, #e67e22, #d35400); }
+  .img-placeholder.snow { background: linear-gradient(135deg, #85c1e9, #2980b9); }
+  .img-placeholder.hero-bg { background: linear-gradient(135deg, #2980b9, #6dd5fa, #ffffff); }
+  .img-placeholder.ski { background: linear-gradient(135deg, #74b9ff, #0984e3); }
+
+  /* Active nav styling */
+  .nav-links a.active { color: var(--yellow); }
+
+  /* Scroll indicators */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #f1f1f1; }
+  ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- Custom Airplane Cursor -->
+<div id="custom-cursor">✈️</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#" onclick="showPage('landing')">
+    <div class="logo-icon">✈</div>
+    <span class="bobs">Bobs</span>Doll Travel
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('landing')" id="nav-landing" class="active">Landing</a></li>
+    <li><a href="#" onclick="showPage('destinations')" id="nav-destinations">Destinations</a></li>
+    <li><a href="#" onclick="showPage('learn')" id="nav-learn">Learn World</a></li>
+    <li><a href="#" onclick="showPage('about')" id="nav-about">About Us</a></li>
+    <li><a href="#" onclick="showPage('contact')" id="nav-contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ========== PAGE 1: LANDING ========== -->
+<div id="page-landing" class="page active">
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Your Dream Vacation<br>☁ <span>Starts Here.</span></h1>
+      <p class="hero-tagline">Discover the world's most breathtaking destinations</p>
+      <div class="hero-search">
+        <span>🔍</span>
+        <input type="text" placeholder="Where do you want to go?">
+        <button class="btn-start">Start Planning</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="num">300+</span><span class="lbl">Destinations</span></div>
+        <div class="stat"><span class="num">15yrs</span><span class="lbl">Experience</span></div>
+        <div class="stat"><span class="num">200T</span><span class="lbl">Happy Clients</span></div>
+      </div>
+    </div>
+    <div class="hero-img-wrap" style="position:relative;">
+      <div class="img-placeholder ski">⛷️</div>
+      <div class="hero-badge">BOOK<br>NOW<br>✓</div>
+    </div>
+  </div>
+
+  <div class="section-title">🌍 Explore Vacation Types</div>
+  <div class="section-sub">Find the type of getaway that suits your style</div>
+
+  <div class="vacation-types">
+    <div class="vtype-card"><div class="dot"></div>Cruises</div>
+    <div class="vtype-card"><div class="dot"></div>Family All-Inclusive</div>
+    <div class="vtype-card"><div class="dot"></div>Work Retreats</div>
+    <div class="vtype-card"><div class="dot"></div>Cultural & Heritage</div>
+    <div class="vtype-card"><div class="dot"></div>Beach Getaways</div>
+    <div class="vtype-card"><div class="dot"></div>Adventure Trips</div>
+    <div class="vtype-card"><div class="dot"></div>International Gastronomic</div>
+  </div>
+
+  <div class="article-section">
+    <div class="article-text">
+      <p>Imagine waking up to a crisp mountain breeze surrounded by snow-capped peaks, or watching the sunset over ancient ruins while sipping on local wine. At BobsDoll Travel, we've been turning travel dreams into unforgettable memories for over 15 years.</p>
+      <p>After you set the destination, step in to learn from the Amazon while experiencing Peru's natural wonders—learn to cook traditional dishes, explore ancient Incan temples that have stood for thousands of years, and immerse yourself in living history. Our expert guides ensure every moment is authentic, educational, and breathtaking. You'll go home changed.</p>
+      <p>Choose from hundreds of curated packages, from family friendly resorts to solo adventures in remote wildernesses. Our team of dedicated travel specialists works tirelessly to bring you exceptional value with premium service.</p>
+    </div>
+    <div class="article-img">
+      <div class="img-placeholder ski">🎿 Adventure Awaits</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE 2: DESTINATIONS ========== -->
+<div id="page-destinations" class="page">
+  <div class="destinations-hero">
+    <h2>Explore Destinations</h2>
+    <div class="dest-search">
+      <span>🔍</span>
+      <input type="text" placeholder="Search destinations...">
+      <button>Search</button>
+    </div>
+  </div>
+
+  <div class="dest-grid">
+    <!-- Row 1 -->
+    <div class="dest-card">
+      <div class="dest-card-img">
+        <div class="img-placeholder beach">🏖️</div>
+        <div class="dest-card-tag">Beach</div>
+      </div>
+      <div class="dest-card-body">
+        <h3>Cancún, Mexico</h3>
+        <p>Crystal-clear waters and vibrant nightlife await in this tropical paradise.</p>
+        <button class="btn-view">View Package</button>
+      </div>
+    </div>
+
+    <div class="dest-card">
+      <div class="dest-card-img">
+        <div class="img-placeholder city">🗼</div>
+        <div class="dest-card-tag">City</div>
+      </div>
+      <div class="dest-card-body">
+        <h3>Paris, France</h3>
+        <p>The City of Light — romance, culture, and world-class cuisine await.</p>
+        <button class="btn-view">View Package</button>
+      </div>
+    </div>
+
+    <div class="dest-card">
+      <div class="dest-card-img">
+        <div class="img-placeholder jungle">🌴</div>
+        <div class="dest-card-tag">Adventure</div>
+      </div>
+      <div class="dest-card-body">
+        <h3>Bali, Indonesia</h3>
+        <p>Ancient temples, lush terraces, and serene spiritual retreats.</p>
+        <button class="btn-view">View Package</button>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="dest-card">
+      <div class="dest-card-img">
+        <div class="img-placeholder snow">🏔️</div>
+        <div class="dest-card-tag">Mountain</div>
+      </div>
+      <div class="dest-card-body">
+        <h3>Swiss Alps</h3>
+        <p>World-class skiing and charming alpine villages in the heart of Europe.</p>
+        <button class="btn-view">View Package</button>
+      </div>
+    </div>
+
+    <div class="dest-card">
+      <div class="dest-card-img">
+        <div class="img-placeholder desert">🏜️</div>
+        <div class="dest-card-tag">Exotic</div>
+      </div>
+      <div class="dest-card-body">
+        <h3>Dubai, UAE</h3>
+        <p>Futuristic skylines, golden deserts, and luxury beyond imagination.</p>
+        <button class="btn-view">View Package</button>
+      </div>
+    </div>
+
+    <div class="dest-card">
+      <div class="dest-card-img">
+        <div class="img-placeholder mountain">🗽</div>
+        <div class="dest-card-tag">Cultural</div>
+      </div>
+      <div class="dest-card-body">
+        <h3>New York, USA</h3>
+        <p>The city that never sleeps — art, fashion, food, and iconic landmarks.</p>
+        <button class="btn-view">View Package</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE 3: LEARN WORLD ========== -->
+<div id="page-learn" class="page">
+  <div class="learn-hero">
+    <h2>🌐 Learn About the World</h2>
+    <p>Explore fascinating facts and discover what makes each destination unique.</p>
+  </div>
+
+  <div class="pins-grid">
+    <div class="pin-emoji">🇲🇽</div>
+    <div class="pin-emoji">🇫🇷</div>
+    <div class="pin-emoji">🇮🇩</div>
+    <div class="pin-emoji">🇨🇭</div>
+    <div class="pin-emoji">🇦🇪</div>
+    <div class="pin-emoji">🇺🇸</div>
+    <div class="pin-emoji">🇯🇵</div>
+    <div class="pin-emoji">🇧🇷</div>
+  </div>
+
+  <div class="click-discover">👆 Click a Pin to Discover</div>
+
+  <div class="world-facts">
+    <div class="fact-card">
+      <h4>🌮 Cancún</h4>
+      <ul>
+        <li>Best: Dec–Apr</li>
+        <li>Currency: MXN Peso</li>
+        <li>Language: Spanish</li>
+        <li>Visa: 180 days</li>
+      </ul>
+      <button class="fact-btn">Explore →</button>
+    </div>
+
+    <div class="fact-card">
+      <h4>🗼 Paris</h4>
+      <ul>
+        <li>Best: Apr–Jun</li>
+        <li>Currency: Euro</li>
+        <li>Language: French</li>
+        <li>Visa: Schengen</li>
+      </ul>
+      <button class="fact-btn">Explore →</button>
+    </div>
+
+    <div class="fact-card">
+      <h4>🛕 Bali</h4>
+      <ul>
+        <li>Best: May–Sep</li>
+        <li>Currency: IDR</li>
+        <li>Language: Indonesian</li>
+        <li>Visa: 30-day VOA</li>
+      </ul>
+      <button class="fact-btn">Explore →</button>
+    </div>
+
+    <div class="fact-card">
+      <h4>🏙️ Sydney</h4>
+      <ul>
+        <li>Best: Sep–Nov</li>
+        <li>Currency: AUD</li>
+        <li>Language: English</li>
+        <li>Visa: ETA required</li>
+      </ul>
+      <button class="fact-btn">Explore →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE 4: ABOUT ========== -->
+<div id="page-about" class="page">
+  <div class="about-hero">
+    <div class="about-hero-content">
+      <h2>About BobsDoll Travel</h2>
+      <p>Your full-service travel agency since 2010. We've helped thousands of families, couples, and solo adventurers experience the world with confidence. Our passionate team of travel experts is committed to crafting personalized itineraries that go beyond the ordinary — turning every journey into a story worth telling.</p>
+    </div>
+    <div class="about-badge">
+      <span class="big">94×91</span>
+      Awards<br>Won
+    </div>
+  </div>
+
+  <div class="what-we-offer">
+    <div class="wwo-title">What We Can Offer</div>
+    <div class="wwo-grid">
+      <div class="wwo-item"><div class="wwo-dot"></div>Custom Trip Planning</div>
+      <div class="wwo-item"><div class="wwo-dot"></div>Flight & Hotel Booking</div>
+      <div class="wwo-item"><div class="wwo-dot"></div>Honeymoon & Anniversary Planning</div>
+      <div class="wwo-item"><div class="wwo-dot"></div>Group & Corporate Packages</div>
+      <div class="wwo-item"><div class="wwo-dot"></div>Research & Educational Visits</div>
+      <div class="wwo-item"><div class="wwo-dot"></div>Corporate & Business Travel Fund</div>
+      <div class="wwo-item"><div class="wwo-dot"></div>Travel Insurance</div>
+      <div class="wwo-item"><div class="wwo-dot"></div>24/7 Support</div>
+    </div>
+  </div>
+
+  <div class="partners-section">
+    <div class="partners-title">Our Trusted Partners</div>
+    <div class="partners-grid">
+      <div class="partner-card partner-rc">⚓ Royal Caribbean<br>INTERNATIONAL</div>
+      <div class="partner-card partner-hyatt">HYATT</div>
+      <div class="partner-card partner-hr">🎸 Hard Rock</div>
+      <div class="partner-card partner-united">✈ United<br>Vacations</div>
+      <div class="partner-card partner-princess">⚓ Princess<br>CRUISES</div>
+      <div class="partner-card partner-classic"><em>Classic</em><br>Vacations</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE 5: CONTACT ========== -->
+<div id="page-contact" class="page">
+  <div class="contact-hero">
+    <h2>📬 Contact BobsDoll Travel</h2>
+  </div>
+
+  <div class="contact-body">
+    <div class="contact-form-section">
+      <h3>Send Us a Message</h3>
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="John Doe">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="john@example.com">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="+1 (555) 000-0000">
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell us about your dream vacation..."></textarea>
+      </div>
+      <button class="btn-send">Send Message →</button>
+    </div>
+
+    <div class="quick-team">
+      <h3>Get In Touch</h3>
+      <div class="team-card">
+        <div class="team-avatar">📧</div>
+        <div class="team-info">
+          <h4>Email</h4>
+          <p>hello@bobsdolltravel.com</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">📞</div>
+        <div class="team-info">
+          <h4>Phone</h4>
+          <p>+1 (212) 555-TRIP</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">📍</div>
+        <div class="team-info">
+          <h4>Address</h4>
+          <p>123 Travel Blvd, Miami FL</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🕐</div>
+        <div class="team-info">
+          <h4>Hours</h4>
+          <p>Mon–Fri: 9am – 6pm EST</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-imgs">
+    <div class="contact-img"><div class="img-placeholder beach">🌴 Tropical Paradise</div></div>
+    <div class="contact-img"><div class="img-placeholder ski">✈️ Adventure Awaits</div></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2025 <span>BobsDoll Travel</span> — All Rights Reserved</div>
+  <div>hello@bobsdolltravel.com | <a href="#">+1 (212) 555-TRIP</a></div>
+</footer>
+
+<script>
+  // ===== AIRPLANE CURSOR =====
+  const cursor = document.getElementById('custom-cursor');
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+
+  document.addEventListener('mousedown', () => {
+    cursor.style.transform = 'translate(-50%, -50%) scale(1.3) rotate(10deg)';
+  });
+
+  document.addEventListener('mouseup', () => {
+    cursor.style.transform = 'translate(-50%, -50%) scale(1) rotate(0deg)';
+  });
+
+  // ===== PAGE NAVIGATION =====
+  function showPage(pageId) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // Show target
+    document.getElementById('page-' + pageId).classList.add('active');
+    // Update nav
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const navEl = document.getElementById('nav-' + pageId);
+    if (navEl) navEl.classList.add('active');
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return false;
+  }
+
+  // Make vacation type cards clickable
+  document.querySelectorAll('.vtype-card').forEach(card => {
+    card.addEventListener('click', () => showPage('destinations'));
+  });
+
+  // Contact form submit
+  document.querySelector('.btn-send')?.addEventListener('click', () => {
+    alert('✈️ Message sent! Our travel experts will get back to you soon.');
+  });
+
+  // Destination view buttons
+  document.querySelectorAll('.btn-view').forEach(btn => {
+    btn.addEventListener('click', () => showPage('contact'));
+  });
+
+  // Fact card explore buttons
+  document.querySelectorAll('.fact-btn').forEach(btn => {
+    btn.addEventListener('click', () => showPage('destinations'));
+  });
+
+  // Pin items
+  document.querySelectorAll('.pin-emoji').forEach(pin => {
+    pin.addEventListener('click', () => {
+      pin.style.transform = 'scale(1.3)';
+      setTimeout(() => pin.style.transform = '', 300);
+    });
+  });
+</script>
+</body>
+</html>
