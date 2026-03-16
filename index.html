@@ -22,8 +22,11 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   /* ===== CUSTOM AIRPLANE CURSOR ===== */
-  body {
+  *, *::before, *::after {
     cursor: none !important;
+  }
+
+  body {
     font-family: 'Nunito', sans-serif;
     background: var(--white);
     color: var(--dark);
@@ -32,12 +35,20 @@
   #custom-cursor {
     position: fixed;
     pointer-events: none;
-    z-index: 99999;
-    top: 0; left: 0;
-    transform: translate(-50%, -50%);
-    transition: transform 0.05s linear;
-    font-size: 28px;
-    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+    z-index: 2147483647;
+    top: 0;
+    left: 0;
+    font-size: 30px;
+    line-height: 1;
+    transform: translate(-50%, -50%) rotate(45deg);
+    will-change: left, top;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.4));
+    user-select: none;
+    white-space: nowrap;
+    overflow: visible;
   }
 
   /* ===== NAV ===== */
@@ -1685,17 +1696,29 @@
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ===== AIRPLANE CURSOR =====
   const cursor = document.getElementById('custom-cursor');
+  let mouseX = -100, mouseY = -100;
+
   document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+
+  document.addEventListener('mouseenter', () => {
+    cursor.style.opacity = '1';
+  });
+
+  document.addEventListener('mouseleave', () => {
+    cursor.style.opacity = '0';
   });
 
   document.addEventListener('mousedown', () => {
-    cursor.style.transform = 'translate(-50%, -50%) scale(1.3) rotate(10deg)';
+    cursor.style.transform = 'translate(-50%, -50%) rotate(45deg) scale(1.3)';
   });
 
   document.addEventListener('mouseup', () => {
-    cursor.style.transform = 'translate(-50%, -50%) scale(1) rotate(0deg)';
+    cursor.style.transform = 'translate(-50%, -50%) rotate(45deg) scale(1)';
   });
 
   // ===== PAGE NAVIGATION =====
@@ -1729,4 +1752,29 @@
   });
 
   // Fact card explore buttons
-  document.querySelecto
+  document.querySelectorAll('.fact-btn').forEach(btn => {
+    btn.addEventListener('click', () => showPage('destinations'));
+  });
+
+  // Pin items
+  document.querySelectorAll('.pin-emoji').forEach(pin => {
+    pin.addEventListener('click', () => {
+      pin.style.transform = 'scale(1.3)';
+      setTimeout(() => pin.style.transform = '', 300);
+    });
+  });
+
+  // Newsletter subscribe
+  document.querySelector('.footer-newsletter button')?.addEventListener('click', () => {
+    const input = document.querySelector('.footer-newsletter input');
+    if (input && input.value) {
+      alert('✈️ You\'re subscribed! Get ready for amazing travel deals.');
+      input.value = '';
+    } else {
+      alert('Please enter your email address.');
+    }
+  });
+
+</script>
+</body>
+</html>
