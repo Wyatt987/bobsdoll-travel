@@ -1,33 +1,154 @@
-<div style="padding: 0.5rem 0; font-family: var(--font-sans);">
+// ===== AIRPLANE CURSOR =====
+const cursor = document.getElementById('custom-cursor');
 
-<div id="map-container" style="position: relative; width: 100%; border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); overflow: hidden; background: #d6eef8;">
-  <svg id="world-map" style="width:100%; display:block;"></svg>
-  <div id="map-tooltip" style="position:absolute; display:none; background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; font-size:13px; pointer-events:none; max-width:220px; box-shadow: 0 2px 8px rgba(0,0,0,0.12);">
-    <div id="tt-name" style="font-weight:500; font-size:14px; color:var(--color-text-primary); margin-bottom:4px;"></div>
-    <div id="tt-body" style="color:var(--color-text-secondary); line-height:1.5;"></div>
-  </div>
-</div>
+document.addEventListener('mousemove', (e) => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
 
-<div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; justify-content:center;" id="dest-pills"></div>
+document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+document.addEventListener('mousedown', () => { cursor.style.transform = 'translate(-50%, -50%) rotate(45deg) scale(1.3)'; });
+document.addEventListener('mouseup', () => { cursor.style.transform = 'translate(-50%, -50%) rotate(45deg) scale(1)'; });
 
-<div id="info-panel" style="display:none; margin-top:12px; background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:1rem 1.25rem;">
-  <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
-    <div>
-      <div id="info-flag" style="font-size:28px; margin-bottom:4px;"></div>
-      <div id="info-name" style="font-size:16px; font-weight:500; color:var(--color-text-primary);"></div>
-      <div id="info-tag" style="font-size:12px; color:var(--color-text-secondary); margin-top:2px;"></div>
-    </div>
-    <button onclick="document.getElementById('info-panel').style.display='none'" style="font-size:12px; padding:4px 10px; border-radius:var(--border-radius-md);">close</button>
-  </div>
-  <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:10px;" id="info-grid"></div>
-  <div id="info-desc" style="margin-top:10px; font-size:13px; color:var(--color-text-secondary); line-height:1.6;"></div>
-</div>
+// ===== MOBILE NAV HAMBURGER =====
+const hamburger = document.getElementById('nav-hamburger');
+const navLinks = document.getElementById('nav-links');
 
-</div>
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-<script>
+// Close nav when a link is clicked
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    navLinks.classList.remove('open');
+  });
+});
+
+// ===== PAGE NAVIGATION =====
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + pageId);
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  return false;
+}
+
+// Make vacation type cards clickable
+document.querySelectorAll('.vtype-card').forEach(card => {
+  card.addEventListener('click', () => showPage('destinations'));
+});
+
+// Contact form submit
+document.querySelector('.btn-send')?.addEventListener('click', () => {
+  alert('✈️ Message sent! Our travel experts will get back to you soon.');
+});
+
+// ===== DESTINATION VIEW BUTTONS =====
+document.querySelectorAll('.btn-view').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.dest-card');
+    const title = card.querySelector('h3').textContent;
+    const desc = card.querySelector('p').textContent;
+    const vacation = card.dataset.vacation || 'More details coming soon!';
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-description').textContent = desc;
+    document.getElementById('modal-vacation').textContent = vacation;
+    document.getElementById('package-modal').style.display = 'block';
+  });
+});
+
+// Modal close
+document.querySelector('.close').addEventListener('click', () => {
+  document.getElementById('package-modal').style.display = 'none';
+});
+
+// Modal contact button
+document.querySelector('.btn-contact').addEventListener('click', () => {
+  document.getElementById('package-modal').style.display = 'none';
+  showPage('contact');
+});
+
+// Click outside modal to close
+window.addEventListener('click', (event) => {
+  const modal = document.getElementById('package-modal');
+  if (event.target === modal) modal.style.display = 'none';
+});
+
+// ===== DESTINATIONS SEARCH + FILTER =====
+let destActiveFilter = 'all';
+
+function filterDestinations() {
+  const query = document.querySelector('.dest-search input')?.value.toLowerCase().trim() || '';
+  const cards = document.querySelectorAll('#dest-grid .dest-card');
+  let visible = 0;
+
+  cards.forEach(card => {
+    const name = card.dataset.name?.toLowerCase() || '';
+    const tag  = card.dataset.tag  || '';
+    const keys = card.dataset.keywords?.toLowerCase() || '';
+    const matchesSearch = !query || name.includes(query) || keys.includes(query);
+    const matchesFilter = destActiveFilter === 'all' || tag === destActiveFilter;
+    if (matchesSearch && matchesFilter) {
+      card.classList.remove('hidden');
+      visible++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  const noResults = document.getElementById('dest-no-results');
+  if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+}
+
+const destInput = document.querySelector('.dest-search input');
+if (destInput) {
+  destInput.addEventListener('input', filterDestinations);
+  destInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') filterDestinations(); });
+}
+
+const destSearchBtn = document.querySelector('.dest-search button');
+if (destSearchBtn) destSearchBtn.addEventListener('click', filterDestinations);
+
+document.querySelectorAll('.dest-filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.dest-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    destActiveFilter = btn.dataset.filter;
+    filterDestinations();
+  });
+});
+
+// Fact card explore buttons
+document.querySelectorAll('.fact-btn').forEach(btn => {
+  btn.addEventListener('click', () => showPage('destinations'));
+});
+
+// Pin items
+document.querySelectorAll('.pin-emoji').forEach(pin => {
+  pin.addEventListener('click', () => {
+    pin.style.transform = 'scale(1.3)';
+    setTimeout(() => pin.style.transform = '', 300);
+  });
+});
+
+// Newsletter subscribe
+document.querySelector('.footer-newsletter button')?.addEventListener('click', () => {
+  const input = document.querySelector('.footer-newsletter input');
+  if (input && input.value) {
+    alert("✈️ You're subscribed! Get ready for amazing travel deals.");
+    input.value = '';
+  } else {
+    alert('Please enter your email address.');
+  }
+});
+
+// ===== MAP =====
 const destinations = [
   { name:"Cancún", country:"Mexico", flag:"🇲🇽", tag:"Beach", coords:[-86.85,21.17], best:"Dec–Apr", currency:"MXN Peso", lang:"Spanish", visa:"180 days free", desc:"Crystal-clear Caribbean waters, ancient Mayan ruins, and vibrant nightlife." },
   { name:"Paris", country:"France", flag:"🇫🇷", tag:"City", coords:[2.35,48.85], best:"Apr–Jun", currency:"Euro", lang:"French", visa:"Schengen (90 days)", desc:"The City of Light — romance, the Eiffel Tower, world-class cuisine and art." },
@@ -58,10 +179,11 @@ const tagColors = {
 
 function buildPills() {
   const container = document.getElementById('dest-pills');
+  if (!container) return;
   destinations.forEach(d => {
     const pill = document.createElement('button');
     pill.textContent = d.flag + ' ' + d.name;
-    pill.style.cssText = `font-size:12px; padding:5px 12px; border-radius:20px; border:1px solid ${tagColors[d.tag] || '#888'}; color:${tagColors[d.tag] || '#888'}; background:transparent; cursor:pointer; font-family:var(--font-sans);`;
+    pill.style.cssText = `font-size:12px; padding:5px 12px; border-radius:20px; border:1px solid ${tagColors[d.tag]||'#888'}; color:${tagColors[d.tag]||'#888'}; background:transparent; cursor:pointer; font-family:var(--font-sans);`;
     pill.onmouseenter = () => pill.style.background = (tagColors[d.tag]||'#888') + '20';
     pill.onmouseleave = () => pill.style.background = 'transparent';
     pill.onclick = () => showInfo(d);
@@ -70,7 +192,9 @@ function buildPills() {
 }
 
 function showInfo(d) {
-  document.getElementById('info-panel').style.display = 'block';
+  const panel = document.getElementById('info-panel');
+  if (!panel) return;
+  panel.style.display = 'block';
   document.getElementById('info-flag').textContent = d.flag;
   document.getElementById('info-name').textContent = d.name + ', ' + d.country;
   document.getElementById('info-tag').textContent = d.tag;
@@ -80,7 +204,7 @@ function showInfo(d) {
   [{l:'Best time', v:d.best},{l:'Currency', v:d.currency},{l:'Language', v:d.lang},{l:'Visa', v:d.visa}].forEach(item => {
     grid.innerHTML += `<div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 10px;"><div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:2px;">${item.l}</div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary);">${item.v}</div></div>`;
   });
-  document.getElementById('info-panel').scrollIntoView({behavior:'smooth', block:'nearest'});
+  panel.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 async function initMap() {
@@ -89,6 +213,7 @@ async function initMap() {
   const countries = topojson.feature(world, world.objects.countries);
 
   const container = document.getElementById('map-container');
+  if (!container) return;
   const W = container.clientWidth || 700;
   const H = Math.round(W * 0.52);
   const svg = d3.select('#world-map').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
@@ -100,11 +225,8 @@ async function initMap() {
 
   const g = svg.append('g');
   g.selectAll('path').data(countries.features).enter().append('path')
-    .attr('d', path)
-    .attr('fill', '#e8f4e8')
-    .attr('stroke', '#a8c8a8')
-    .attr('stroke-width', 0.4)
-    .style('cursor', 'default');
+    .attr('d', path).attr('fill', '#e8f4e8').attr('stroke', '#a8c8a8')
+    .attr('stroke-width', 0.4).style('cursor', 'default');
 
   const tooltip = document.getElementById('map-tooltip');
 
@@ -112,44 +234,42 @@ async function initMap() {
     const [x, y] = projection(d.coords);
     if (!x || !y) return;
     const color = tagColors[d.tag] || '#888';
-
     const pinG = svg.append('g').style('cursor', 'pointer');
 
     pinG.append('circle').attr('cx', x).attr('cy', y).attr('r', 7)
       .attr('fill', color).attr('stroke', '#fff').attr('stroke-width', 1.5).attr('opacity', 0.9);
 
     pinG.append('text').attr('x', x).attr('y', y + 4).attr('text-anchor', 'middle')
-      .attr('font-size', 7).attr('fill', '#fff').attr('font-weight', 'bold')
-      .text(d.flag);
+      .attr('font-size', 7).attr('fill', '#fff').attr('font-weight', 'bold').text(d.flag);
 
-    pinG.on('mouseenter', function(event) {
-      d3.select(this).select('circle').attr('r', 10).attr('opacity', 1);
-      const rect = container.getBoundingClientRect();
-      const cx = event.clientX - rect.left;
-      const cy = event.clientY - rect.top;
-      tooltip.style.display = 'block';
-      tooltip.style.left = Math.min(cx + 12, W - 230) + 'px';
-      tooltip.style.top = Math.max(cy - 60, 4) + 'px';
-      document.getElementById('tt-name').textContent = d.flag + ' ' + d.name + ', ' + d.country;
-      document.getElementById('tt-body').innerHTML = `<b>Type:</b> ${d.tag}<br><b>Best time:</b> ${d.best}<br><b>Currency:</b> ${d.currency}`;
-    })
-    .on('mousemove', function(event) {
-      const rect = container.getBoundingClientRect();
-      const cx = event.clientX - rect.left;
-      const cy = event.clientY - rect.top;
-      tooltip.style.left = Math.min(cx + 12, W - 230) + 'px';
-      tooltip.style.top = Math.max(cy - 60, 4) + 'px';
-    })
-    .on('mouseleave', function() {
-      d3.select(this).select('circle').attr('r', 7).attr('opacity', 0.9);
-      tooltip.style.display = 'none';
-    })
-    .on('click', () => showInfo(d));
+    pinG
+      .on('mouseenter', function(event) {
+        d3.select(this).select('circle').attr('r', 10).attr('opacity', 1);
+        const rect = container.getBoundingClientRect();
+        const cx = event.clientX - rect.left;
+        const cy = event.clientY - rect.top;
+        tooltip.style.display = 'block';
+        tooltip.style.left = Math.min(cx + 12, W - 230) + 'px';
+        tooltip.style.top = Math.max(cy - 60, 4) + 'px';
+        document.getElementById('tt-name').textContent = d.flag + ' ' + d.name + ', ' + d.country;
+        document.getElementById('tt-body').innerHTML = `<b>Type:</b> ${d.tag}<br><b>Best time:</b> ${d.best}<br><b>Currency:</b> ${d.currency}`;
+      })
+      .on('mousemove', function(event) {
+        const rect = container.getBoundingClientRect();
+        tooltip.style.left = Math.min(event.clientX - rect.left + 12, W - 230) + 'px';
+        tooltip.style.top = Math.max(event.clientY - rect.top - 60, 4) + 'px';
+      })
+      .on('mouseleave', function() {
+        d3.select(this).select('circle').attr('r', 7).attr('opacity', 0.9);
+        tooltip.style.display = 'none';
+      })
+      .on('click', () => showInfo(d));
   });
 }
 
+// Init map when on learn page
 buildPills();
-initMap().catch(e => {
-  document.getElementById('world-map').innerHTML = '<text x="50%" y="50%" text-anchor="middle" fill="#888" font-size="14">Map failed to load — check your connection</text>';
+initMap().catch(() => {
+  const svg = document.getElementById('world-map');
+  if (svg) svg.innerHTML = '<text x="50%" y="50%" text-anchor="middle" fill="#888" font-size="14">Map failed to load</text>';
 });
-</script>
