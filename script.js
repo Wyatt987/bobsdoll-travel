@@ -150,26 +150,26 @@ document.querySelector('.footer-newsletter button')?.addEventListener('click', (
 
 // ===== MAP =====
 const destinations = [
-  { name:"Cancún", country:"Mexico", flag:"🇲🇽", tag:"Beach", coords:[-86.85,21.17], best:"Dec–Apr", currency:"MXN Peso", lang:"Spanish", visa:"180 days free", desc:"Crystal-clear Caribbean waters, ancient Mayan ruins, and vibrant nightlife." },
-  { name:"Paris", country:"France", flag:"🇫🇷", tag:"City", coords:[2.35,48.85], best:"Apr–Jun", currency:"Euro", lang:"French", visa:"Schengen (90 days)", desc:"The City of Light — romance, the Eiffel Tower, world-class cuisine and art." },
-  { name:"Bali", country:"Indonesia", flag:"🇮🇩", tag:"Adventure", coords:[115.19,-8.41], best:"May–Sep", currency:"IDR Rupiah", lang:"Indonesian", visa:"30-day VOA", desc:"Ancient temples, lush rice terraces, and serene spiritual retreats." },
-  { name:"Swiss Alps", country:"Switzerland", flag:"🇨🇭", tag:"Mountain", coords:[8.23,46.82], best:"Dec–Mar", currency:"CHF Franc", lang:"German/French", visa:"Schengen (90 days)", desc:"World-class skiing and charming alpine villages in the heart of Europe." },
-  { name:"Dubai", country:"UAE", flag:"🇦🇪", tag:"Exotic", coords:[55.27,25.20], best:"Nov–Mar", currency:"AED Dirham", lang:"Arabic/English", visa:"30 days on arrival", desc:"Futuristic skylines, golden deserts, and luxury beyond imagination." },
-  { name:"New York", country:"USA", flag:"🇺🇸", tag:"City", coords:[-74.01,40.71], best:"Sep–Nov", currency:"USD Dollar", lang:"English", visa:"ESTA required", desc:"The city that never sleeps — art, fashion, food, and iconic landmarks." },
-  { name:"Tokyo", country:"Japan", flag:"🇯🇵", tag:"Cultural", coords:[139.69,35.69], best:"Mar–May", currency:"JPY Yen", lang:"Japanese", visa:"90 days free", desc:"Ultra-modern city meets ancient tradition — shrines, sushi, and neon lights." },
-  { name:"Santorini", country:"Greece", flag:"🇬🇷", tag:"Island", coords:[25.43,36.39], best:"Jun–Sep", currency:"Euro", lang:"Greek", visa:"Schengen (90 days)", desc:"White-washed cliffs, iconic blue domes, and breathtaking Aegean sunsets." },
-  { name:"Machu Picchu", country:"Peru", flag:"🇵🇪", tag:"Adventure", coords:[-72.54,-13.16], best:"May–Oct", currency:"PEN Sol", lang:"Spanish", visa:"183 days free", desc:"Lost Incan citadel high in the Andes — one of the world's greatest wonders." },
-  { name:"Maldives", country:"Maldives", flag:"🇲🇻", tag:"Island", coords:[73.50,4.17], best:"Nov–Apr", currency:"MVR Rufiyaa", lang:"Dhivehi/English", visa:"30 days on arrival", desc:"Overwater bungalows, crystal lagoons, and the world's most pristine coral reefs." },
-  { name:"Rome", country:"Italy", flag:"🇮🇹", tag:"Cultural", coords:[12.48,41.90], best:"Apr–Jun", currency:"Euro", lang:"Italian", visa:"Schengen (90 days)", desc:"The Eternal City — ancient ruins, Renaissance art, and incredible Italian food." },
-  { name:"Nairobi", country:"Kenya", flag:"🇰🇪", tag:"Adventure", coords:[36.82,-1.29], best:"Jul–Oct", currency:"KES Shilling", lang:"Swahili/English", visa:"E-visa required", desc:"Gateway to the Big Five and the Great Migration across the Maasai Mara." },
-  { name:"Barcelona", country:"Spain", flag:"🇪🇸", tag:"City", coords:[2.15,41.39], best:"May–Jun", currency:"Euro", lang:"Spanish/Catalan", visa:"Schengen (90 days)", desc:"Gaudí masterpieces, golden beaches, and legendary tapas bars at every corner." },
-  { name:"Patagonia", country:"Argentina", flag:"🇦🇷", tag:"Mountain", coords:[-72.70,-51.72], best:"Nov–Mar", currency:"ARS Peso", lang:"Spanish", visa:"90 days free", desc:"Dramatic glaciers, jagged peaks, and untouched wilderness at the end of the world." },
-  { name:"Sydney", country:"Australia", flag:"🇦🇺", tag:"City", coords:[151.21,-33.87], best:"Sep–Nov", currency:"AUD Dollar", lang:"English", visa:"ETA required", desc:"Iconic Opera House, stunning harbour, golden beaches, and outdoor adventure." },
-  { name:"Kyoto", country:"Japan", flag:"🇯🇵", tag:"Cultural", coords:[135.77,35.01], best:"Mar–May", currency:"JPY Yen", lang:"Japanese", visa:"90 days free", desc:"Timeless temples, bamboo groves, geisha culture, and stunning autumn foliage." },
-  { name:"Iceland", country:"Iceland", flag:"🇮🇸", tag:"Adventure", coords:[-19.02,64.96], best:"Jun–Aug", currency:"ISK Króna", lang:"Icelandic/English", visa:"Schengen (90 days)", desc:"Chase the Northern Lights, hike volcanoes, and bathe in geothermal hot springs." },
-  { name:"Marrakech", country:"Morocco", flag:"🇲🇦", tag:"Exotic", coords:[-7.99,31.63], best:"Mar–May", currency:"MAD Dirham", lang:"Arabic/French", visa:"90 days free", desc:"Labyrinthine souks, fragrant spice markets, and gateway to the Sahara Desert." },
-  { name:"Bangkok", country:"Thailand", flag:"🇹🇭", tag:"Exotic", coords:[100.50,13.75], best:"Nov–Feb", currency:"THB Baht", lang:"Thai", visa:"30 days free", desc:"Glittering temples, legendary street food, and electric energy around every corner." },
-  { name:"Queenstown", country:"New Zealand", flag:"🇳🇿", tag:"Adventure", coords:[168.66,-45.03], best:"Dec–Feb", currency:"NZD Dollar", lang:"English/Māori", visa:"NZeTA required", desc:"The adventure capital of the world — bungee jumping, skiing, and stunning fjords." },
+  { name:"Cancún", country:"Mexico", flag:"🇲🇽", tag:"Beach", coords:[-86.85,21.17], best:"Dec–Apr", currency:"MXN Peso", lang:"Spanish", visa:"180 days free", desc:"Crystal-clear Caribbean waters, ancient Mayan ruins, and vibrant nightlife.", funFact:"Home to the second-largest barrier reef system in the world!" },
+  { name:"Paris", country:"France", flag:"🇫🇷", tag:"City", coords:[2.35,48.85], best:"Apr–Jun", currency:"Euro", lang:"French", visa:"Schengen (90 days)", desc:"The City of Light — romance, the Eiffel Tower, world-class cuisine and art.", funFact:"The Eiffel Tower was originally intended to be temporary and stand for only 20 years!" },
+  { name:"Bali", country:"Indonesia", flag:"🇮🇩", tag:"Adventure", coords:[115.19,-8.41], best:"May–Sep", currency:"IDR Rupiah", lang:"Indonesian", visa:"30-day VOA", desc:"Ancient temples, lush rice terraces, and serene spiritual retreats.", funFact:"Bali has over 20,000 temples, more than any other island in the world!" },
+  { name:"Swiss Alps", country:"Switzerland", flag:"🇨🇭", tag:"Mountain", coords:[8.23,46.82], best:"Dec–Mar", currency:"CHF Franc", lang:"German/French", visa:"Schengen (90 days)", desc:"World-class skiing and charming alpine villages in the heart of Europe.", funFact:"Switzerland has 48 mountains over 4,000 meters high!" },
+  { name:"Dubai", country:"UAE", flag:"🇦🇪", tag:"Exotic", coords:[55.27,25.20], best:"Nov–Mar", currency:"AED Dirham", lang:"Arabic/English", visa:"30 days on arrival", desc:"Futuristic skylines, golden deserts, and luxury beyond imagination.", funFact:"The Burj Khalifa is the tallest building in the world at 828 meters!" },
+  { name:"New York", country:"USA", flag:"🇺🇸", tag:"City", coords:[-74.01,40.71], best:"Sep–Nov", currency:"USD Dollar", lang:"English", visa:"ESTA required", desc:"The city that never sleeps — art, fashion, food, and iconic landmarks.", funFact:"New York City has 468 subway stations, more than any other city!" },
+  { name:"Tokyo", country:"Japan", flag:"🇯🇵", tag:"Cultural", coords:[139.69,35.69], best:"Mar–May", currency:"JPY Yen", lang:"Japanese", visa:"90 days free", desc:"Ultra-modern city meets ancient tradition — shrines, sushi, and neon lights.", funFact:"Tokyo has the world's busiest pedestrian crossing at Shibuya!" },
+  { name:"Santorini", country:"Greece", flag:"🇬🇷", tag:"Island", coords:[25.43,36.39], best:"Jun–Sep", currency:"Euro", lang:"Greek", visa:"Schengen (90 days)", desc:"White-washed cliffs, iconic blue domes, and breathtaking Aegean sunsets.", funFact:"Santorini's volcanic eruption in 1600 BC may have inspired the Atlantis legend!" },
+  { name:"Machu Picchu", country:"Peru", flag:"🇵🇪", tag:"Adventure", coords:[-72.54,-13.16], best:"May–Oct", currency:"PEN Sol", lang:"Spanish", visa:"183 days free", desc:"Lost Incan citadel high in the Andes — one of the world's greatest wonders.", funFact:"Machu Picchu was built around 1450 AD and abandoned just 100 years later!" },
+  { name:"Maldives", country:"Maldives", flag:"🇲🇻", tag:"Island", coords:[73.50,4.17], best:"Nov–Apr", currency:"MVR Rufiyaa", lang:"Dhivehi/English", visa:"30 days on arrival", desc:"Overwater bungalows, crystal lagoons, and the world's most pristine coral reefs.", funFact:"The Maldives consists of 1,192 coral islands spread over 90,000 square kilometers!" },
+  { name:"Rome", country:"Italy", flag:"🇮🇹", tag:"Cultural", coords:[12.48,41.90], best:"Apr–Jun", currency:"Euro", lang:"Italian", visa:"Schengen (90 days)", desc:"The Eternal City — ancient ruins, Renaissance art, and incredible Italian food.", funFact:"Rome has been continuously inhabited for over 2,500 years!" },
+  { name:"Nairobi", country:"Kenya", flag:"🇰🇪", tag:"Adventure", coords:[36.82,-1.29], best:"Jul–Oct", currency:"KES Shilling", lang:"Swahili/English", visa:"E-visa required", desc:"Gateway to the Big Five and the Great Migration across the Maasai Mara.", funFact:"Nairobi means 'place of cool waters' in the Maasai language!" },
+  { name:"Barcelona", country:"Spain", flag:"🇪🇸", tag:"City", coords:[2.15,41.39], best:"May–Jun", currency:"Euro", lang:"Spanish/Catalan", visa:"Schengen (90 days)", desc:"Gaudí masterpieces, golden beaches, and legendary tapas bars at every corner.", funFact:"Barcelona's Sagrada Familia has been under construction since 1882!" },
+  { name:"Patagonia", country:"Argentina", flag:"🇦🇷", tag:"Mountain", coords:[-72.70,-51.72], best:"Nov–Mar", currency:"ARS Peso", lang:"Spanish", visa:"90 days free", desc:"Dramatic glaciers, jagged peaks, and untouched wilderness at the end of the world.", funFact:"Patagonia spans two countries: Argentina and Chile!" },
+  { name:"Sydney", country:"Australia", flag:"🇦🇺", tag:"City", coords:[151.21,-33.87], best:"Sep–Nov", currency:"AUD Dollar", lang:"English", visa:"ETA required", desc:"Iconic Opera House, stunning harbour, golden beaches, and outdoor adventure.", funFact:"Sydney Harbour Bridge is the widest steel arch bridge in the world!" },
+  { name:"Kyoto", country:"Japan", flag:"🇯🇵", tag:"Cultural", coords:[135.77,35.01], best:"Mar–May", currency:"JPY Yen", lang:"Japanese", visa:"90 days free", desc:"Timeless temples, bamboo groves, geisha culture, and stunning autumn foliage.", funFact:"Kyoto was Japan's capital for over 1,000 years until 1868!" },
+  { name:"Iceland", country:"Iceland", flag:"🇮🇸", tag:"Adventure", coords:[-19.02,64.96], best:"Jun–Aug", currency:"ISK Króna", lang:"Icelandic/English", visa:"Schengen (90 days)", desc:"Chase the Northern Lights, hike volcanoes, and bathe in geothermal hot springs.", funFact:"Iceland has no mosquitoes and no snakes!" },
+  { name:"Marrakech", country:"Morocco", flag:"🇲🇦", tag:"Exotic", coords:[-7.99,31.63], best:"Mar–May", currency:"MAD Dirham", lang:"Arabic/French", visa:"90 days free", desc:"Labyrinthine souks, fragrant spice markets, and gateway to the Sahara Desert.", funFact:"Marrakech's Bahia Palace has 160 rooms and took 14 years to build!" },
+  { name:"Bangkok", country:"Thailand", flag:"🇹🇭", tag:"Exotic", coords:[100.50,13.75], best:"Nov–Feb", currency:"THB Baht", lang:"Thai", visa:"30 days free", desc:"Glittering temples, legendary street food, and electric energy around every corner.", funFact:"Bangkok's full name is 169 characters long — the longest city name in the world!" },
+  { name:"Queenstown", country:"New Zealand", flag:"🇳🇿", tag:"Adventure", coords:[168.66,-45.03], best:"Dec–Feb", currency:"NZD Dollar", lang:"English/Māori", visa:"NZeTA required", desc:"The adventure capital of the world — bungee jumping, skiing, and stunning fjords.", funFact:"Queenstown is home to the world's first commercial bungee jump!" },
 ];
 
 const tagColors = {
@@ -194,17 +194,27 @@ function buildPills() {
 function showInfo(d) {
   const panel = document.getElementById('info-panel');
   if (!panel) return;
-  panel.style.display = 'block';
   document.getElementById('info-flag').textContent = d.flag;
   document.getElementById('info-name').textContent = d.name + ', ' + d.country;
   document.getElementById('info-tag').textContent = d.tag;
-  document.getElementById('info-desc').textContent = d.desc;
   const grid = document.getElementById('info-grid');
   grid.innerHTML = '';
   [{l:'Best time', v:d.best},{l:'Currency', v:d.currency},{l:'Language', v:d.lang},{l:'Visa', v:d.visa}].forEach(item => {
     grid.innerHTML += `<div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 10px;"><div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:2px;">${item.l}</div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary);">${item.v}</div></div>`;
   });
+  document.getElementById('info-desc').textContent = d.desc;
+  document.getElementById('fun-fact-text').textContent = d.funFact;
+  panel.classList.remove('info-panel-hidden');
+  panel.classList.add('info-panel-visible');
   panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function closeInfoPanel() {
+  const panel = document.getElementById('info-panel');
+  if (panel) {
+    panel.classList.remove('info-panel-visible');
+    panel.classList.add('info-panel-hidden');
+  }
 }
 
 async function initMap() {
