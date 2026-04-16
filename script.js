@@ -74,6 +74,10 @@ document.querySelector('.btn-contact').addEventListener('click', () => {
   showPage('contact');
 });
 
+document.querySelectorAll('.pricing-card button').forEach(btn => {
+  btn.addEventListener('click', () => showPage('contact'));
+});
+
 // Click outside modal to close
 window.addEventListener('click', (event) => {
   const modal = document.getElementById('package-modal');
@@ -89,9 +93,9 @@ function filterDestinations() {
   let visible = 0;
 
   cards.forEach(card => {
-    const name = card.dataset.name?.toLowerCase() || '';
-    const tag  = card.dataset.tag  || '';
-    const keys = card.dataset.keywords?.toLowerCase() || '';
+    const name = card.dataset.name?.toLowerCase() || card.querySelector('h3')?.textContent.toLowerCase() || '';
+    const tag = (card.dataset.tag || card.querySelector('.dest-card-tag')?.textContent || '').trim();
+    const keys = card.dataset.keywords?.toLowerCase() || `${name} ${tag} ${card.querySelector('p')?.textContent.toLowerCase() || ''}`;
     const matchesSearch = !query || name.includes(query) || keys.includes(query);
     const matchesFilter = destActiveFilter === 'all' || tag === destActiveFilter;
     if (matchesSearch && matchesFilter) {
